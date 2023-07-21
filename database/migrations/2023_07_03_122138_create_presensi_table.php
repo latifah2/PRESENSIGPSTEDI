@@ -22,7 +22,8 @@ return new class extends Migration
             $table->time('jam_out')->nullable();
             $table->string('foto_in')->nullable();
             $table->string('foto_out')->nullable();
-            $table->string('location')->nullable();
+            $table->string('location_in')->nullable();
+            $table->string('location_out')->nullable();
         });
     }
 
