@@ -45,7 +45,7 @@
     <div class="row">
       <div class="col-12">
         <div class="form-group mt-2">
-          <button class="btn bg-ugm btn-block" id="getdata">
+          <button type="button" class="btn bg-ugm btn-block" id="getdata">
             <ion-icon name="search-outline"></ion-icon>Submit
           </button>
         </div>

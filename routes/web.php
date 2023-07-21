@@ -30,6 +30,7 @@ route::middleware(['guest:karyawan'])->group(function(){
 route::middleware(['auth:karyawan'])->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/proseslogout', [AuthController::class,'proseslogout']);
+
     //presensi
     Route::get('/presensi/create',[PresensiController::class,'create']);
     Route::post('/presensi/store',[PresensiController::class,'store']);
@@ -42,8 +43,8 @@ route::middleware(['auth:karyawan'])->group(function(){
     Route::get('/presensi/prosentase',[PresensiController::class,'prosentase']);
     Route::get('/presensi/terlambat',[PresensiController::class,'terlambat']);
 
+    //cuti
     Route::get('/cuti',[CutiController::class,'cuti']);
     Route::post('/cuti/save',[CutiController::class,'saveCuti']);
-    Route::get('/download',[CutiController::class,'download'])->name('download');
     
 });

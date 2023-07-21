@@ -12,9 +12,7 @@
     <!-- jQuery Circle Progress -->
     <script src="{{asset ('assets/js/plugins/jquery-circle-progress/circle-progress.min.js')}}"></script>
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOgmBMhKUtn9GKnZ6MjYad9-1VrnHjGms"></script>
     <!-- Base Js File -->
