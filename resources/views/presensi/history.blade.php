@@ -19,9 +19,6 @@
         <div class="form-group">
           <select name="bulan" id="bulan" class="form-control">
             <option value="">Bulan</option>
-            @php
-            $namabulan = ["", "januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            @endphp
             @for ($i=1 ; $i <= 12; $i++) 
               <option value="{{ $i }}" {{date("m") == $i ? 'selected' : ''}}>{{ $namabulan [$i] }}</option>
             @endfor

@@ -41,7 +41,7 @@ return [
             'provider' => 'karyawans',
         ],
 
-        'karyawan' => [
+        'userAuthentication' => [
             'driver' => 'session',
             'provider' => 'karyawans',
         ],

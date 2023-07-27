@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($history as $key => $item)
+        @foreach ($terlambat as $key => $item)
         <tr>
             <th scope="row">{{ $key+1 }}</th>
             <td>{{ $item->nama_lengkap }}</td>
@@ -35,11 +35,8 @@
             </td>
             <td>
                 <?php 
-                if (strtotime($item->jam_in)> strtotime('07:00:00')) {
+                if (strtotime($item->jam_in) > strtotime('07:00:00')) {
                     echo "Terlambat";  
-                }
-                else {
-                    echo "Tepat waktu";
                 }
                 ?>
             </td>

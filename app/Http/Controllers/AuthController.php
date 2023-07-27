@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function proseslogin(request $request)
     {
-        // $checkKaryawan = Karyawan::where('nim', $request->nim)
-        // ->where('password', $request->password)->get()->count();
-
-        $checkAuth = Auth::guard('karyawan')->attempt(['nim' => $request->nim, 'password' => $request->password]);
+        $checkAuth = Auth::guard('userAuthentication')->attempt(['nim' => $request->nim, 'password' => $request->password]);
         if ($checkAuth) {
             return redirect('/dashboard');
         } else {
@@ -24,7 +23,7 @@ class AuthController extends Controller
 
     public function proseslogout()
     {
-        if (Auth::guard('karyawan')->check()) {
+        if (Auth::guard('userAuthentication')->check()) {
             Auth::logout();
             return redirect('/');
         }

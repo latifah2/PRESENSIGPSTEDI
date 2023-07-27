@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-6 pt-2">
+    <div class="col-6 pt-5">
       @php
       $waktu = date("H");
       $ucapanWaktu = '';
@@ -21,36 +21,37 @@
           $ucapanWaktu='Siang' ; } elseif ($waktu>= 14 && $waktu < 18) { $ucapanWaktu='Sore' ; }elseif ($waktu>= 18 &&
             $waktu < 24) { $ucapanWaktu='Malam' ; } @endphp 
             <h3 class="mb-0">Selamat {{ $ucapanWaktu }}</h3>
-            <h4 class="mb-0">Latifah Nisa </h4>
+            <h4 class="mb-0"> {{ $userInfo->nama_lengkap }} </h4>
     </div>
-    <div class="col-6">
-      <h3 class="float-right mt-3">Ini Profil</h3>
-      {{-- <img src="" style="" class="mt-3" alt=""> --}}
+    <div class="col-6 text-right">
+        <img src="{{ asset('public/upload/imageprofile/'.$userInfo->image_profile) }}" class="mt-3" style="border-radius:50%;object-fit: cover;width: 100px;height: 100px;" alt="image">
     </div>
-    <div class="col-md-12 mt-2">
-      <div class="card pl-2 pt-2 pr-2 pb-0 br-27" style="background: #083d62;">
-        <h3 class="text-white">Today- {{ date("d M Y") }}</h3>
-        <div class="row">
-          <div class="col-6">
-            <div class="card bg-white mb-3 br-27">
-              <div class="card-body">
-                <h5 class="card-title"> <i class="fa-solid fa-box"></i> Masuk</h5>
-                <p class="card-text">{{ empty($infoAbsen->jam_in) ? '-' : $infoAbsen->jam_in }}</p>
-              </div>
+  </div>
+  @if (Auth::guard('userAuthentication')->user()->user_status == 'Guest')
+  <div class="col-md-12 mt-2">
+    <div class="card pl-2 pt-2 pr-2 pb-0 br-27" style="background: #083d62;">
+      <h3 class="text-white">Today- {{ date("d M Y") }}</h3>
+      <div class="row">
+        <div class="col-6">
+          <div class="card bg-white mb-3 br-27">
+            <div class="card-body">
+              <h5 class="card-title"> <i class="fa-solid fa-box"></i> Masuk</h5>
+              <p class="card-text">{{ empty($infoAbsen->jam_in) ? '-' : $infoAbsen->jam_in }}</p>
             </div>
           </div>
-          <div class="col-6">
-            <div class="card bg-white mb-3 br-27">
-              <div class="card-body">
-                <h5 class="card-title">Pulang</h5>
-                <p class="card-text">{{ empty($infoAbsen->jam_out) ? '-' : $infoAbsen->jam_out }}</p>
-              </div>
+        </div>
+        <div class="col-6">
+          <div class="card bg-white mb-3 br-27">
+            <div class="card-body">
+              <h5 class="card-title">Pulang</h5>
+              <p class="card-text">{{ empty($infoAbsen->jam_out) ? '-' : $infoAbsen->jam_out }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  @endif
   <div class="row">
     <div class="col-4 j-center">
       <div class="card mt-3 w-100 text-center bgc-clear c-pointer" onclick="location.replace('presensi/lokasi')">
@@ -76,7 +77,8 @@
         <h3>Jadwal</h3>
       </div>
     </div>
-  </div><div class="row">
+  </div>
+  <div class="row">
     <div class="col-4 j-center">
       <div class="card mt-3 w-100 text-center bgc-clear c-pointer" onclick="location.replace('presensi/terlambat')">
         <div class="card-body br-27 bgc-blue">
@@ -102,7 +104,7 @@
       </div>
     </div>
   </div>
-
+  @if (Auth::guard('userAuthentication')->user()->user_status == 'Guest')
   <div class="row">
     <div class="col">
       <div class="card mt-2">
@@ -143,6 +145,7 @@
       </div>
     </div>
   </div>
+  @endif
   <br /><br /><br /><br /><br />
 </div>
 

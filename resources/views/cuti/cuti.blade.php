@@ -23,8 +23,12 @@
       <form action="/cuti/save" enctype="multipart/form-data" method="POST"> 
         @csrf
         <div class="form-group">
-          <label for="exampleFormControlFile1">Upload file Cuti</label>
-          <input type="file" name="file_cuti" class="form-control-file" accept=".pdf" id="exampleFormControlFile1">
+          <label for="">Tanggal Cuti/Izin</label>
+          <input type="date" name="tanggal_izin" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="">Upload file Cuti</label>
+          <input type="file" name="file_cuti" class="form-control-file" required accept=".pdf" id="exampleFormControlFile1">
         </div>
         <div class="form-group">
         <button type="submit" class="btn btn-primary" role="button"><i class="fa fa-upload"></i>&nbsp;&nbsp; Upload</button>
@@ -38,6 +42,7 @@
         <thead>
           <tr>
             <th scope="col">No</th>
+            <th scope="col">Tanggal Pengajuan</th>
             <th scope="col">Tanggal Cuti</th>
             <th scope="col">File Cuti</th>
             <th scope="col">Status</th>
@@ -48,6 +53,7 @@
           <tr>
             <th scope="row">{{ $key+1 }}</th>
             <td>{{ $item->created_at }}</td>
+            <td>{{ $item->tanggal_izin }}</td>
             <td><a href="{{ asset('public/upload/cuti/'.$item->file_cuti) }}" target="_blank">{{ $item->file_cuti }}</a></td>
             <td>{{ $item->status }}</td>
           </tr>    

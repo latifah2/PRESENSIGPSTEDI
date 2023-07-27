@@ -90,10 +90,10 @@
             },
             cache: false,
             success : function(response) {
-                if (response) {
+                if (response.status == 'true') {
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: 'Anda sudah berhasil absen',
+                        text: response.message,
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 2000
@@ -104,7 +104,7 @@
                 }else{
                     Swal.fire({
                         title: 'gagal absen!',
-                        text: status[1],
+                        text: response.message,
                         icon: 'error',
                         confirmButtonText: 'Okee'
                     })
@@ -170,6 +170,7 @@
     }
 
     // face detection area
+    let smileCheck = 0;
     setTimeout(() => {
         const video = document.getElementById('video');
 
@@ -188,7 +189,6 @@
         )
         }
 
-        let smileCheck = 0;
         video.addEventListener('play', () => {
             const canvas = faceapi.createCanvasFromMedia(video)
             document.body.append(canvas)

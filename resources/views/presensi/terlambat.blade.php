@@ -13,43 +13,73 @@
     <!-- * App Header --> 
 @endsection
 @section('content')
-<div class="container">
+  <div class="container">
     <div class="row" style="margin-top: 70px">
-        <div class="col">
-           <table class="table table-bordered">
-               <thead>
-                 <tr>
-                   <th scope="col">#</th>
-                   <th scope="col">First</th>
-                   <th scope="col">Last</th>
-                   <th scope="col">Handle</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <th scope="row">1</th>
-                   <td>Mark</td>
-                   <td>Otto</td>
-                   <td>@mdo</td>
-                 </tr>
-                 <tr>
-                   <th scope="row">2</th>
-                   <td>Jacob</td>
-                   <td>Thornton</td>
-                   <td>@fat</td>
-                 </tr>
-                 <tr>
-                   <th scope="row">3</th>
-                   <td colspan="2">Larry the Bird</td>
-                   <td>@twitter</td>
-                 </tr>
-               </tbody>
-             </table>     
-       </div>   
-       </div>
+      <div class="col-12">
+        <div class="form-group">
+          <select name="bulan" id="bulan" class="form-control">
+            <option value="">Bulan</option>
+            @for ($i=1 ; $i <= 12; $i++) 
+              <option value="{{ $i }}" {{date("m") == $i ? 'selected' : ''}}>{{ $namabulan[$i] }}</option>
+            @endfor
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-grup">
+          <select name="tahun" id="tahun" class="form-control">
+            <option value="">Tahun</option>
+            @php
+              $tahunmulai = 2022;
+              $tahunskrg = date("Y");  
+            @endphp
+            @for ($tahun =$tahunmulai ; $tahun <= $tahunskrg ; $tahun++) <option value="{{ $tahun }}" {{date("Y") == $tahun ? 'selected' : ''}}>{{ $tahun }}</option>
+            @endfor
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group mt-2">
+          <button type="button" class="btn bg-ugm btn-block" id="getdata">
+            <ion-icon name="search-outline"></ion-icon>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-12" id="showterlambat">
+      
+    </div>
+  </div>
 </div>
-    
+  
 @endsection
 @push('myscript')
-
+<script>
+  $(function() {
+      $("#getdata").click(function(e) {
+        var bulan = $("#bulan").val();
+        var tahun = $("#tahun").val();
+        $.ajax({
+          type: 'POST',
+          url: '/getterlambat',
+          data: {
+            _token: "{{csrf_token ()}}",
+            bulan:bulan,
+            tahun:tahun,
+          },
+          dataType: 'html',
+          cache: false,
+          beforeSend: function() {
+            $('#showterlambat').html('<b>Sedang memuat data..</b>')
+          },
+          success: function(respond) {
+            $("#showterlambat").html(respond);
+          }
+        })
+      })
+   })
+</script>
 @endpush

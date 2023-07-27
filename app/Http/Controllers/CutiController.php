@@ -11,14 +11,14 @@ class CutiController extends Controller
 {
     public function cuti()
     {
-        $idKaryawan = Auth::guard('karyawan')->user()->id;
+        $idKaryawan = Auth::guard('userAuthentication')->user()->id;
         $data['listCuti'] = DB::table('cuti')->where('id_karyawan',$idKaryawan )->get();
         return view('cuti.cuti', $data);
     }
 
     public function saveCuti(Request $request)
     {
-        $dataUserLogin = Auth::guard('karyawan')->user();
+        $dataUserLogin = Auth::guard('userAuthentication')->user();
         $filename = 'form-cuti-'.time().'-'.$dataUserLogin->nim.'.pdf';
 
         //upload file cuti
@@ -30,7 +30,8 @@ class CutiController extends Controller
             'id_karyawan' => $dataUserLogin->id,
             'file_cuti' => $filename,
             'status' => 'pending', // pending, approved, rejected,
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'tanggal_izin' => $request->tanggal_izin 
         ];
         $simpan = DB::table('cuti')->insert($data);
         if ($simpan) {

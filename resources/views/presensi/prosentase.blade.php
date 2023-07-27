@@ -7,7 +7,7 @@
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </a>
         </div>
-        <div class="pageTitle">Prosentase Kehadiran</div>
+        <div class="pageTitle">Prosentase Kehadiran Bulan {{ date("F-Y") }}</div>
         <div class="right"></div>
     </div>
     <!-- * App Header --> 
@@ -19,35 +19,21 @@
         <canvas id="chart-presensi"></canvas>
       </div>
   </div>
-  <div class="row mt-4">
+  <div class="row mt-4 " style="margin-bottom: 70px">
     <div class="col">
       <table class="table">
         <thead class="bg-ugm">
           <tr>
-            <th scope="col" style="color:white;">#</th>
-            <th scope="col" style="color:white;">First</th>
-            <th scope="col" style="color:white;">Last</th>
-            <th scope="col" style="color:white;">Handle</th>
+            <th scope="col" style="color:white;">Tepat Waktu</th>
+            <th scope="col" style="color:white;">Terlambat</th>
+            <th scope="col" style="color:white;">Cuti</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td>{{ $dataChart['tepatWaktu'] }}</td>
+            <td>{{ $dataChart['terlambat'] }}</td>
+            <td>{{ $dataChart['cuti'] }}</td>
           </tr>
         </tbody>
       </table>
@@ -60,6 +46,9 @@
 <script src="{{ asset('assets/js/chart.js') }}"></script>
 
 <script>
+
+  const dataFromPHP = <?php echo json_encode($dataChart); ?>;
+
   const ctx = $('#chart-presensi');
   new Chart(ctx, {
     type: 'pie',
@@ -67,7 +56,7 @@
       labels: ['Tepat Waktu', 'Terlambat', 'Cuti'],
       datasets: [{
         label: '# of Votes',
-        data: [12, 19, 3],
+        data: [dataFromPHP.tepatWaktu, dataFromPHP.terlambat, dataFromPHP.cuti],
         borderWidth: 1
       }]
     },
@@ -80,5 +69,4 @@
     }
   });
 </script>
-
 @endpush
