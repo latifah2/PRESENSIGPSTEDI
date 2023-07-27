@@ -15,31 +15,36 @@
 @section('content')
 <div class="container">
     <div class="row" style="margin-top: 70px; margin-bottom: 100px">
-        <div class="col-12 text-center">
-            <img src="{{ asset('public/upload/imageprofile/'.$karyawan->image_profile) }}" class="mt-3" style="border-radius:50%;object-fit: cover;width: 230px;height: 230px;" alt="image">
-        </div>
-        <div class="col-12 mt-3">
-           <table class="table table-bordered">
-               <tbody>
-                 <tr>
-                   <th scope="col" style="width: 40%">Nama Lengkap</th>
-                   <th scope="col">{{ $karyawan->nama_lengkap }}</th>
-                 </tr>
-                 <tr>
-                    <th scope="col">NIM</th>
-                    <th scope="col">{{ $karyawan->nim }}</th>
-                 </tr>
-                 <tr>
-                    <th scope="col">Jabatan</th>
-                    <th scope="col">{{ $karyawan->jabatan }}</th>
-                 </tr>
-                 <tr>
-                    <th scope="col">No. HP</th>
-                    <th scope="col">{{ $karyawan->no_hp }}</th>
-                 </tr>
-               </tbody>
-             </table>     
-       </div>   
+       <div class="col-md-12 mt-3">
+            <h3>Tambah User</h3>
+            <div class="card p-3">
+                <form action="/" method="POST">
+                    <div class="form-group">
+                        <label for="inputAddress">NIM</label>
+                        <input type="text" class="form-control" id="" name="nim" placeholder="10001231231">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="" name="nama_lengkap" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Email</label>
+                        <input type="email" class="form-control" id="" name="email" placeholder="a@g.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">Jabatan</label>
+                            <input type="text" class="form-control" id="" placeholder="1234 Main St">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress2">No HP</label>
+                            <input type="text" class="form-control" id="" placeholder="">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+       </div>  
        <div class="col-12 mt-3">
            <h3>List User Tamu</h3>
             <table class="table">

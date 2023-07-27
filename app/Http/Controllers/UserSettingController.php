@@ -12,7 +12,6 @@ class UserSettingController extends Controller
     {
         $id = Auth::guard('userAuthentication')->user()->id;
         return view('presensi.usersetting', [
-            'karyawan' => DB::table('karyawan')->where('id',$id)->first(),
             'listUserTamu' => DB::table('karyawan')->where('user_status', 'Guest')->orderBy('id')->get()
         ]);
     }
