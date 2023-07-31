@@ -58,6 +58,8 @@ route::middleware(['auth:userAuthentication'])->group(function(){
     //cuti
     Route::get('/cuti',[CutiController::class,'cuti']);
     Route::post('/cuti/save',[CutiController::class,'saveCuti']);
+    Route::post('/cuti/update-status-cuti',[CutiController::class,'updateStatusCuti']);
+    
 
     
     

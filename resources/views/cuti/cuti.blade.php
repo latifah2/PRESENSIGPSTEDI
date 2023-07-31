@@ -14,6 +14,7 @@
 @endsection
 @section('content')
 <div class="container">
+  @if (Auth::guard('userAuthentication')->user()->user_status === 'Guest')
   <div class="row"  style="margin-top: 70px">
     <div class="col-12">
     <!--<a class="btn btn-primary" href="/contohfiledownload.pdf" role="button"><i class="fa fa-download"></i>&nbsp;&nbsp; Download File</a>-->
@@ -36,31 +37,71 @@
       </form>
     </div>
   </div>
-  <div class="row">
+  @endif
+  <div class="row" @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin') style = "margin-top: 80px" @endif> 
+    @if (!empty(Session::get('error')))
+    <div class="alert alert-danger" role="alert">
+    {{ Session::get('error') }}
+    </div>
+ @endif
+ 
+ @if (!empty(Session::get('success')))
+ <div class="alert alert-success" role="alert">
+    {{ Session::get('success') }}
+</div>
+ @endif
     <div class="col-12">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">Tanggal Pengajuan</th>
-            <th scope="col">Tanggal Cuti</th>
-            <th scope="col">File Cuti</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($listCuti as $key => $item)
-          <tr>
-            <th scope="row">{{ $key+1 }}</th>
-            <td>{{ $item->created_at }}</td>
-            <td>{{ $item->tanggal_izin }}</td>
-            <td><a href="{{ asset('public/upload/cuti/'.$item->file_cuti) }}" target="_blank">{{ $item->file_cuti }}</a></td>
-            <td>{{ $item->status }}</td>
-          </tr>    
-          @endforeach
-          
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="bg-ugm" >
+            <tr>
+              <th class="text-white">No</th>
+              <th class="text-white">Nama Lengkap</th>
+              <th class="text-white">Tanggal Pengajuan</th>
+              <th class="text-white">Tanggal Cuti</th>
+              <th class="text-white">File Cuti</th>
+              <th class="text-white">Status</th>
+              @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin')
+              <th class="text-white">Approval</th>
+              @endif
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            @foreach ($listCuti as $key => $item)
+            <tr>
+              <th scope="row">{{ $key+1 }}</th>
+              <td>{{ $item->nama_lengkap }}</td>
+              <td>{{ $item->created_at }}</td>
+              <td>{{ $item->tanggal_izin }}</td>
+              <td><a href="{{ asset('public/upload/cuti/'.$item->file_cuti) }}" target="_blank">{{ $item->file_cuti }}</a></td>
+              <td>
+                  @if (strtolower($item->status) === 'pending')
+                      <span class="badge badge-warning">Pending</span>
+                  @elseif (strtolower($item->status) === 'approved')
+                      <span class="badge badge-success">Approved</span>
+                  @elseif (strtolower($item->status) === 'rejected')
+                      <span class="badge badge-danger">Rejected</span>
+                  @endif
+              </td>
+              @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin')
+              <td>
+                <form action="/cuti/update-status-cuti" class="mb-1" method="POST">
+                  @csrf
+                  <input type="hidden" name="id" value="{{ $item->id }}">
+                  <input type="hidden" name="status_approval" value="Approved">
+                  <button type="submit" class="btn btn-primary" style="width: 100px">Approved</button> 
+                  <input type="hidden" name="status_rejected" value="Rejected">
+                  <button type="submit" class="btn btn-danger" style="width: 100px">Rejected</button>
+                </form>
+              </td>
+              @endif
+            </tr>    
+            @endforeach
+            
+          </tbody>
+        </table>
+      </div>
+      
     </div>
   </div>
 </div>

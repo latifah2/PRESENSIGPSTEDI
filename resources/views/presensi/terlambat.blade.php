@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="col-12">
-        <div class="form-grup">
+        <div class="form-group">
           <select name="tahun" id="tahun" class="form-control">
             <option value="">Tahun</option>
             @php
@@ -38,6 +38,18 @@
           </select>
         </div>
       </div>
+      @if (Auth::guard('userAuthentication')->user()->user_status != 'Guest')
+      <div class="col-12">
+        <div class="form-group">
+          <select name="karyawan" id="iKaryawan" class="form-control">
+            <option value="">Nama Lengkap</option>
+            @foreach($listKaryawan as $karyawan)
+              <option value="{{ $karyawan->id }}">{{ $karyawan->nama_lengkap }}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+    @endif
     </div>
     <div class="row">
       <div class="col-12">
@@ -62,6 +74,12 @@
       $("#getdata").click(function(e) {
         var bulan = $("#bulan").val();
         var tahun = $("#tahun").val();
+        var karyawan = $("#iKaryawan").val();
+
+        // Pengecekan untuk karyawan yang dipilih
+        if (karyawan === "") {
+          karyawan = null; // Kirimkan nilai null jika karyawan tidak dipilih
+        }
         $.ajax({
           type: 'POST',
           url: '/getterlambat',
@@ -69,8 +87,9 @@
             _token: "{{csrf_token ()}}",
             bulan:bulan,
             tahun:tahun,
+            karyawan:karyawan
           },
-          dataType: 'html',
+          dataType: 'html', 
           cache: false,
           beforeSend: function() {
             $('#showterlambat').html('<b>Sedang memuat data..</b>')

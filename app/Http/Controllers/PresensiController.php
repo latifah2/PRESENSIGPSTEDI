@@ -92,23 +92,45 @@ class PresensiController extends Controller
     public function prosentase()
     {
         $nim = Auth::guard('userAuthentication')->user()->nim;
+        $id =  Auth::guard('userAuthentication')->user()->id;
         $fromDate = date('Y-m')."-01";
         $toDate = $this->getLastDateOfMonth(date('Y'), date('m'));
-        $data['listjamin'] = DB::table('presensi')->where('nim',$nim )->get();
-        $tepatwaktu = DB::table('presensi')->whereBetween('jam_in', [
-            $fromDate ." 01:00:00", 
-            $toDate ." 07:00:00"
-        ])->get();
-        $terlambat = DB::table('presensi')->whereBetween('jam_in', [
-            $fromDate ." 07:00:00", 
-            $toDate ." 15:00:00"
-        ])->get();
-        $cobabetween = DB::table('cuti')->whereBetween('tanggal_izin', ['2023-07-01', '2023-07-30'])
-        ->get();
+        //$data['listjamin'] = DB::table('presensi')->where('nim',$nim )->get();
+        if (Auth::guard('userAuthentication')->user()->user_status == 'Guest') {
+            $tepatwaktu = DB::table('presensi')->whereBetween('jam_in', [
+                $fromDate ." 01:00:00", 
+                $toDate ." 07:00:00"
+            ])
+            ->where('id_karyawan', $id)
+            ->get();
+            $terlambat = DB::table('presensi')->whereBetween('jam_in', [
+                $fromDate ." 07:00:00", 
+                $toDate ." 15:00:00"
+            ])
+            ->where('id_karyawan', $id)
+            ->get();
+            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', ['2023-07-01', '2023-07-30'])
+            ->where('id_karyawan', $id)
+            ->get();
+        } else {
+            $tepatwaktu = DB::table('presensi')->whereBetween('jam_in', [
+                $fromDate ." 01:00:00", 
+                $toDate ." 07:00:00"
+            ])
+            ->get();
+            $terlambat = DB::table('presensi')->whereBetween('jam_in', [
+                $fromDate ." 07:00:00", 
+                $toDate ." 15:00:00"
+            ])
+            ->get();
+            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', ['2023-07-01', '2023-07-30'])
+            ->get();
+        }
+        
         // Menghitung jumlah data untuk masing-masing label
         $tepatWaktuCount = count($tepatwaktu);
         $terlambatCount = count($terlambat);
-        $cutiCount = count($cobabetween);
+        $cutiCount = count($cuti);
 
         // Menggabungkan data ke dalam array asosiatif
         $dataChart = [
@@ -116,23 +138,30 @@ class PresensiController extends Controller
         'terlambat' => $terlambatCount,
         'cuti' => $cutiCount
         ];
-        return view ('presensi.prosentase', compact ('tepatwaktu', 'cobabetween', 'terlambat', 'dataChart'));
+        return view ('presensi.prosentase', compact ('tepatwaktu', 'cuti', 'terlambat', 'dataChart'));
     }
     
     public function terlambat()
     {
         $namabulan = ["", "januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        return view ('presensi.terlambat', compact('namabulan'));
+
+        // Dapatkan daftar karyawan untuk bagian admin
+        $listKaryawan = [];
+        if (Auth::guard('userAuthentication')->user()->user_status != 'Guest') {
+            $listKaryawan = DB::table('karyawan')->select('id', 'nama_lengkap')->get();
+        }
+        return view ('presensi.terlambat', compact('namabulan', 'listKaryawan'));
     }
 
     public function getterlambat(Request $request)
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        $iKaryawan = $request->karyawan;
         $idKaryawan = Auth::guard('userAuthentication')->user()->id;
 
         if (Auth::guard('userAuthentication')->user()->user_status == 'Guest') {
-        $terlambat = DB::table('presensi')
+            $terlambat = DB::table('presensi')
             ->select('presensi.*', 'karyawan.nama_lengkap')
             ->leftJoin('karyawan', 'presensi.id_karyawan', '=', 'karyawan.id')
             ->whereRaw('MONTH(tgl_presensi)="'.$bulan.'"')
@@ -141,7 +170,7 @@ class PresensiController extends Controller
             ->where('presensi.id_karyawan', $idKaryawan)
             ->orderBy('tgl_presensi')
             ->get();
-
+            
         }else{
             /**
              * data khusus admin
@@ -152,6 +181,9 @@ class PresensiController extends Controller
             ->whereRaw('MONTH(tgl_presensi)="'.$bulan.'"')
             ->whereRaw('YEAR(tgl_presensi)="'.$tahun.'"')
             ->whereRaw('TIME(jam_in) > "07:00:00"')
+            ->when($iKaryawan, function ($query, $iKaryawan) {
+                return $query->where('presensi.id_karyawan', $iKaryawan);
+            })
             ->orderBy('tgl_presensi')
             ->get();
         }    
@@ -240,7 +272,7 @@ class PresensiController extends Controller
                 'foto_out' => $fileName,
                 'location_out' => $lokasi
             ];
-            $update = DB::table('presensi')->where('nim',$nim)-> where('tgl_presensi', $tgl_presensi)-> update($data);
+            $update = DB::table('presensi')->where('nim',$nim)->where('tgl_presensi', $tgl_presensi)->update($data);
             Storage::put($file, $image_base64);
             echo json_encode([
                 'status' => 'true',

@@ -15,10 +15,22 @@
 @section('content')
 <div class="container">
     <div class="row" style="margin-top: 70px; margin-bottom: 100px">
-       <div class="col-md-12 mt-3">
+       <div class="col-md-12 mb-2">
+        @if (!empty(Session::get('error')))
+        <div class="alert alert-danger" role="alert">
+        {{ Session::get('error') }}
+        </div>
+     @endif
+     
+     @if (!empty(Session::get('success')))
+     <div class="alert alert-success mb-2" role="alert">
+        {{ Session::get('success') }}
+    </div>
+     @endif
             <h3>Tambah User</h3>
             <div class="card p-3">
-                <form action="/" method="POST">
+                <form action="/user-setting/add" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="inputAddress">NIM</label>
                         <input type="text" class="form-control" id="" name="nim" placeholder="10001231231">
@@ -34,11 +46,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputAddress">Jabatan</label>
-                            <input type="text" class="form-control" id="" placeholder="1234 Main St">
+                            <input type="text" class="form-control" id="" name="jabatan" placeholder="1234 Main St">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputAddress2">No HP</label>
-                            <input type="text" class="form-control" id="" placeholder="">
+                            <input type="text" class="form-control" id="" name="no_hp" placeholder="">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
