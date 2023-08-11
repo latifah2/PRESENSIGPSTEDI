@@ -68,7 +68,7 @@
 
                     <div class="form-links mt-2">
                         <div>
-                            <a href="page-register.html">Register Now</a>
+                            <a href="/auth/google">Login With Google</a>
                         </div>
                         <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
                     </div>

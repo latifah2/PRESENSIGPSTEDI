@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class CutiController extends Controller
 {
@@ -26,6 +28,7 @@ class CutiController extends Controller
     public function saveCuti(Request $request)
     {
         $dataUserLogin = Auth::guard('userAuthentication')->user();
+        //Mail::to($request->user())->send(new SendEmail($fileCuti));
         $filename = 'form-cuti-'.time().'-'.$dataUserLogin->nim.'.pdf';
         //default status
         $status = 'pending';
@@ -44,6 +47,9 @@ class CutiController extends Controller
             $folderPath = "public/upload/cuti/";
             $fileCuti = $request->file('file_cuti');
             $fileCuti->move($folderPath, $filename);
+          //  $request->file('file_cuti')->storeAs($folderPath, $filename);
+            $fileCuti = storage_path("app/{$folderPath}{$filename}");
+            Mail::to('admin@example.com')->send(new SendEmail($fileCuti));
             // Jika user adalah 'Guest', maka statusnya pending
             $status = 'pending';
 

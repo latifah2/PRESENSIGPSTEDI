@@ -9,6 +9,8 @@
             <th scope="col" style="color:white;">Jam Pulang</th>
             <th scope="col" style="color:white;">Total Jam</th>
             <th scope="col" style="color:white;">Status</th>
+            <th scope="col" style="color:white;width:130px;">Foto Masuk</th>
+            <th scope="col" style="color:white;width:130px;">Foto Pulang</th>
         </tr>
     </thead>
     <tbody>
@@ -43,6 +45,8 @@
                 }
                 ?>
             </td>
+            <td><a href="{{ asset('storage/upload/absensi/'.$item->foto_in) }}" target="_blank">{{ $item->foto_in }}</a></td>
+            <td><a href="{{ asset('storage/upload/absensi/'.$item->foto_out) }}" target="_blank">{{ $item->foto_out }}</a></td>
         </tr>
         @endforeach
         

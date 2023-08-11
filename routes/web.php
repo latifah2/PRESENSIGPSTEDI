@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
@@ -27,6 +28,9 @@ route::middleware(['guest:userAuthentication'])->group(function(){
         return view('auth.login');
     })->name('login');
     Route::post('/proseslogin', [AuthController::class,'proseslogin']);
+
+    Route::get('/auth/google', [GoogleAuthController::class,'authGoogle']);
+    Route::get('/auth/google/call-back', [GoogleAuthController::class,'callbackGoogle']);
 });
 
 route::middleware(['auth:userAuthentication'])->group(function(){

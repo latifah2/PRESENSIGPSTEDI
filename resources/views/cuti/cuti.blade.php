@@ -56,7 +56,9 @@
           <thead class="bg-ugm" >
             <tr>
               <th class="text-white">No</th>
+              @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin')
               <th class="text-white">Nama Lengkap</th>
+              @endif
               <th class="text-white">Tanggal Pengajuan</th>
               <th class="text-white">Tanggal Cuti</th>
               <th class="text-white">File Cuti</th>
@@ -70,7 +72,9 @@
             @foreach ($listCuti as $key => $item)
             <tr>
               <th scope="row">{{ $key+1 }}</th>
+              @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin')
               <td>{{ $item->nama_lengkap }}</td>
+              @endif
               <td>{{ $item->created_at }}</td>
               <td>{{ $item->tanggal_izin }}</td>
               <td><a href="{{ asset('public/upload/cuti/'.$item->file_cuti) }}" target="_blank">{{ $item->file_cuti }}</a></td>

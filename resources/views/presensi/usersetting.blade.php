@@ -15,18 +15,19 @@
 @section('content')
 <div class="container">
     <div class="row" style="margin-top: 70px; margin-bottom: 100px">
-       <div class="col-md-12 mb-2">
-        @if (!empty(Session::get('error')))
-        <div class="alert alert-danger" role="alert">
-        {{ Session::get('error') }}
+        <div class="col-md-12 mb-2">
+        @if ($message = Session::get('error'))
+       <div class="alert alert-danger" role="alert">
+        {{ $message }}
+       </div>
+       @endif
+
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success mb-2" role="alert">
+        {{ $message }}
         </div>
-     @endif
-     
-     @if (!empty(Session::get('success')))
-     <div class="alert alert-success mb-2" role="alert">
-        {{ Session::get('success') }}
-    </div>
-     @endif
+        @endif
+
             <h3>Tambah User</h3>
             <div class="card p-3">
                 <form action="/user-setting/add" method="POST">
@@ -82,6 +83,9 @@
                </tbody>
            </table>
        </div>
+       <div class="col-12 mt-3">
+          <a href="/logout" class="btn mt-2 w-100 bg-ugm">Logout</a>
+        </div>
 </div>
 
     
