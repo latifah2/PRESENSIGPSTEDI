@@ -23,10 +23,18 @@ class PresensiController extends Controller
         $this->longitude = 112.7520883;
     }
     
+    /**
+     * untuk menampilkan halaman presensi
+     */
     public function create()
     {
         $hariini = date("Y-m-d");
         $nim = Auth::guard('userAuthentication')->user()->nim;
+        /**
+         * untuk menampilkan data tabel presensi berdasarkan tanggal presensi dan nim
+         * data checkAbsen untuk melakukan pengecekan kapan presensi masuk dan pulang
+         * 
+         */
         $data['checkAbsen'] = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nim', $nim)->first();
         return view('presensi.create', $data);
     }
@@ -38,7 +46,7 @@ class PresensiController extends Controller
 
     public function history()
     {
-        $data['namabulan'] = ["", "januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $data['namabulan'] = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         return view ('presensi.history', $data);
     }
 
@@ -109,7 +117,7 @@ class PresensiController extends Controller
             ])
             ->where('id_karyawan', $id)
             ->get();
-            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', ['2023-07-01', '2023-07-30'])
+            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', [$fromDate, $toDate])
             ->where('id_karyawan', $id)
             ->get();
         } else {
@@ -123,7 +131,7 @@ class PresensiController extends Controller
                 $toDate ." 15:00:00"
             ])
             ->get();
-            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', ['2023-07-01', '2023-07-30'])
+            $cuti = DB::table('cuti')->whereBetween('tanggal_izin', [$fromDate, $toDate])
             ->get();
         }
         
@@ -203,10 +211,11 @@ class PresensiController extends Controller
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
 
+        // bagian pengcekan jarak
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
 
-        if($radius > 9){
+        if($radius > 9){ // bagian pengcekan jarak
             echo json_encode([
                 'status' => 'false',
                 'message' => "Maaf Anda Berada diluar Radius, Jarak Anda ".$radius." Meter dari TEDI"
@@ -227,8 +236,8 @@ class PresensiController extends Controller
                 'foto_in' => $fileName,
                 'location_in' => $lokasi
             ];
-            $simpan = DB::table('presensi')->insert($data);
-            Storage::put($file, $image_base64);
+            $simpan = DB::table('presensi')->insert($data); // untuk menyimpan di db table presensi
+            Storage::put($file, $image_base64); // upload file gambar presensi
             echo json_encode([
                 'status' => 'true',
                 'message' => "Anda sudah berhasil absen masuk"

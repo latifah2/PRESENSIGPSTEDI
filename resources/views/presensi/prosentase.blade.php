@@ -46,16 +46,16 @@
 <script src="{{ asset('assets/js/chart.js') }}"></script>
 
 <script>
-
+// jsonencode untuk merubah data dari array ke bentuk json string
   const dataFromPHP = <?php echo json_encode($dataChart); ?>;
-
+// console.log(dataFromPHP);
   const ctx = $('#chart-presensi');
   new Chart(ctx, {
     type: 'pie',
     data: {
       labels: ['Tepat Waktu', 'Terlambat', 'Cuti'],
       datasets: [{
-        label: '# of Votes',
+        label: 'Data Presensi',
         data: [dataFromPHP.tepatWaktu, dataFromPHP.terlambat, dataFromPHP.cuti],
         borderWidth: 1
       }]
@@ -63,7 +63,7 @@
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true //untuk memulai chart dari 0
         }
       }
     }

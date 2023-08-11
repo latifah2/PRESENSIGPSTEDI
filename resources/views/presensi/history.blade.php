@@ -19,9 +19,9 @@
         <div class="form-group">
           <select name="bulan" id="bulan" class="form-control">
             <option value="">Bulan</option>
-            @for ($i=1 ; $i <= 12; $i++) 
-              <option value="{{ $i }}" {{date("m") == $i ? 'selected' : ''}}>{{ $namabulan [$i] }}</option>
-            @endfor
+            @foreach ($namabulan as $key => $bulan)
+              <option value="{{ $key+1 }}" {{date("m") == $key+1 ? 'selected' : ''}}>{{ $bulan }}</option>
+            @endforeach
           </select>
         </div>
       </div>
@@ -49,6 +49,7 @@
       </div>
     </div>
   <div class="row">
+    {{-- area buat isi tablenya  --}}
     <div class="col-12" id="showhistory">
       
     </div>
@@ -59,6 +60,7 @@
 @push('myscript')
 <script>
   $(function() {
+      // prosesskirm data bulan dan tahun ke fungsi gethis..
       $("#getdata").click(function(e) {
         var bulan = $("#bulan").val();
         var tahun = $("#tahun").val();

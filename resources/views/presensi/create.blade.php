@@ -25,26 +25,31 @@
 @section('content')
 <div class="row" style="margin-top: 70px">
     <div class="col text-center">
+        {{-- input id lokasi untuk menampung titik koordinat
+            titik koordinat berasal dari js    
+        --}}
         <input type="hidden" id="lokasi">
+        {{-- untuk area kamera --}}
         <div class="webcam-capture"></div>
+        {{-- untuk menampilakan expresi dalam bentuk text --}}
         <h3 id="status" class="mt-2">Loading...</h3>
     </div>
 </div>
 <div class="row">
     @if (empty($checkAbsen->jam_in) || empty($checkAbsen->jam_out))
-    @if (empty($checkAbsen->jam_in))
+        @if (empty($checkAbsen->jam_in))
+            <div class="col">
+                <button id="takeabsen" class="btn bg-ugm btn-block btn-absen" style="display: none">
+                <ion-icon name="camera-outline"></ion-icon>
+                Absen Masuk</button>
+            </div>
+        @else
         <div class="col">
-            <button id="takeabsen" class="btn bg-ugm btn-block btn-absen" style="display: none">
+            <button id="takeabsenpulang" class="btn bg-ugm btn-block btn-absen" style="display: none">
             <ion-icon name="camera-outline"></ion-icon>
-            Absen Masuk</button>
+            Absen Pulang</button>
         </div>
-    @else
-    <div class="col">
-        <button id="takeabsenpulang" class="btn bg-ugm btn-block btn-absen" style="display: none">
-        <ion-icon name="camera-outline"></ion-icon>
-        Absen Pulang</button>
-    </div>
-    @endif
+        @endif
     @else
     <div class="col">
         <div class="card-body br-27 pt-1">
@@ -61,30 +66,49 @@
 
 @push('myscript')
 <script> 
+    
+    // untuk mendapatkan current lokasi
+    var lokasi = $('#lokasi'); 
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    }
 
+    function successCallback(position) {
+        let myLocation = position.coords.latitude + "," + position.coords.longitude;
+        $('#lokasi').val(myLocation);
+    }
+
+    function errorCallback() {
+        console.error();
+    }
+
+    // set live camera
     Webcam.set({
         height: 480,
         width: 640,
         image_format: 'jpeg',
         jpeg_quality: 80
     });
-
     Webcam.attach('.webcam-capture');
 
     $('video').attr('id', 'video');
 
+    // untuk prosess checkin absen -> insert data ke table presensi -> jam_in
     $("#takeabsen").click(function(e) {
+        // untuk foto waktu dia klik absen in
         Webcam.snap(function(uri) {
             image = uri;
         });
 
         var lokasi = $("#lokasi").val();
+        // ajax berfungsi untuk mengirimkan data ke controller ygnantinya data akan di simpan di db presensi
+        // sama kaya form
         $.ajax({
             type : 'POST',
             url : '/presensi/store',
             dataType: 'json',
             data : {
-                _token: "{{ csrf_token()}}",
+                _token: "{{ csrf_token()}}", // untuk kemanan standar dari laravelnya
                 image: image,
                 lokasi : lokasi
             },
@@ -154,25 +178,10 @@
 
     });
 
-    var lokasi = $('#lokasi'); 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-    }
-
-    function successCallback(position) {
-        let myLocation = position.coords.latitude + "," + position.coords.longitude;
-        $('#lokasi').val(myLocation);
-        console.log(myLocation, 'iniii');
-    }
-
-    function errorCallback() {
-        console.error();
-    }
-
     // face detection area
     let smileCheck = 0;
     setTimeout(() => {
-        const video = document.getElementById('video');
+        const video = document.getElementById('video'); // vidio ini dapet dari elemen yg terbentuk dari library webcam
 
         Promise.all([
             faceapi.nets.tinyFaceDetector.loadFromUri("{{ asset('assets/js/models') }}"),
@@ -189,9 +198,8 @@
         )
         }
 
-        video.addEventListener('play', () => {
+        video.addEventListener('play', () => { // ketica
             const canvas = faceapi.createCanvasFromMedia(video)
-            document.body.append(canvas)
             const displaySize = { width: 640, height: 480}
             faceapi.matchDimensions(canvas, displaySize)
             setInterval(async () => {

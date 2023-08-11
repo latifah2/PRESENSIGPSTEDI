@@ -21,6 +21,8 @@
     </div>
     <div class="col-12 mt-3">
       <a class="btn btn-primary mb-2" href="/public/downloads/Form-Cuti-Karyawan-TEDI.pdf" role="button"><i class="fa fa-download"></i>&nbsp;&nbsp; Download File</a>
+      {{-- form input tgl cuti dan file cuti akan dikirimkan ke fungsi save di cutiController melalui link action
+       enctype="multipart/form-data" digunakan agar input yg bertipe file dpt dibaca fungsi save --}}
       <form action="/cuti/save" enctype="multipart/form-data" method="POST"> 
         @csrf
         <div class="form-group">
@@ -50,7 +52,7 @@
     {{ Session::get('success') }}
 </div>
  @endif
-    <div class="col-12">
+    <div class="col-12" style="padding-bottom: 100px">
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead class="bg-ugm" >
@@ -92,9 +94,13 @@
                 <form action="/cuti/update-status-cuti" class="mb-1" method="POST">
                   @csrf
                   <input type="hidden" name="id" value="{{ $item->id }}">
-                  <input type="hidden" name="status_approval" value="Approved">
+                  <input type="hidden" name="status" value="Approved">
                   <button type="submit" class="btn btn-primary" style="width: 100px">Approved</button> 
-                  <input type="hidden" name="status_rejected" value="Rejected">
+                </form>
+                <form action="/cuti/update-status-cuti" class="mb-1" method="POST">
+                  @csrf
+                  <input type="hidden" name="id" value="{{ $item->id }}">
+                  <input type="hidden" name="status" value="Rejected">
                   <button type="submit" class="btn btn-danger" style="width: 100px">Rejected</button>
                 </form>
               </td>

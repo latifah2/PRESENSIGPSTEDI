@@ -14,7 +14,11 @@ class CutiController extends Controller
     public function cuti()
     {
         $idKaryawan = Auth::guard('userAuthentication')->user()->id;
+        //listcuti menampung data cuti berdasarkan id karyawan 
         $data['listCuti'] = DB::table('cuti')->where('id_karyawan',$idKaryawan )->get();
+        //jika yang login admin 
+        //select : ambil semua data di tabel cuti dan data kolom nama lengkap dari tabel karyawan dengan 
+        //menggabungkan dua tabel cuti dan karyawan menggunakan id.
         if (Auth::guard('userAuthentication')->user()->user_status != 'Guest') {
             $data['listCuti'] = DB::table('cuti')
             ->select('cuti.*', 'karyawan.nama_lengkap')
@@ -40,18 +44,18 @@ class CutiController extends Controller
             'status' => $status, // pending, approved, rejected,
             'created_at' => date('Y-m-d H:i:s'),
             'tanggal_izin' => $request->tanggal_izin 
-            ];
+        ];
 
         if (Auth::guard('userAuthentication')->user()->user_status == 'Guest') {
         //upload file cuti
             $folderPath = "public/upload/cuti/";
             $fileCuti = $request->file('file_cuti');
             $fileCuti->move($folderPath, $filename);
-          //  $request->file('file_cuti')->storeAs($folderPath, $filename);
-            $fileCuti = storage_path("app/{$folderPath}{$filename}");
-            Mail::to('admin@example.com')->send(new SendEmail($fileCuti));
+
+            // $request->file('file_cuti')->storeAs($folderPath, $filename);
+            // $fileCuti = storage_path("app/{$folderPath}{$filename}");
+            // Mail::to('admin@example.com')->send(new SendEmail($fileCuti));
             // Jika user adalah 'Guest', maka statusnya pending
-            $status = 'pending';
 
             $simpan = DB::table('cuti')->insert($data);
             if ($simpan) {
@@ -59,39 +63,18 @@ class CutiController extends Controller
             }else{
                 echo 'gagal';
             }
-        }else{
-            /**
-             * data khusus admin
-             */
-            // Jika user bukan 'Guest', maka status bisa approved atau rejected
-        $status = $request->has('is_approved') ? 'approved' : 'rejected';
-        $simpan = DB::table('cuti')->insert($data);
-        if ($simpan) {
-            return redirect('/cuti');
-        } else {
-            echo 'gagal';
-        }
         }
     }
 
     public function updateStatusCuti(Request $request)
     {
         $update = DB::table('cuti')->where('id', $request->id)->update([
-            'status' => $request->status_approval 
+            'status' => $request->status
         ]);
         if ($update) {
             return redirect('/cuti');
         }else {
-            echo "gagal melakukan update status approval cuti";
-        }
-
-        $update = DB::table('cuti')->where('id', $request->id)->update([
-            'status' => $request->status_rejected
-        ]);
-        if ($update) {
-            return redirect('/cuti');
-        }else {
-            echo "gagal melakukan update status rejected cuti";
+            echo "gagal melakukan update status ".$request->status." cuti, kemungkinan anda melakuakn appraove / reject double";
         }
     }
 }

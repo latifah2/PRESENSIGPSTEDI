@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    //untuk memproses unputan dri form login yang terdapat nim dan password
     public function proseslogin(request $request)
     {
         $checkAuth = Auth::guard('userAuthentication')->attempt(['nim' => $request->nim, 'password' => $request->password]);
