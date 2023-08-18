@@ -94,12 +94,14 @@
                 <form action="/cuti/update-status-cuti" class="mb-1" method="POST">
                   @csrf
                   <input type="hidden" name="id" value="{{ $item->id }}">
+                  <input type="hidden" name="id_karyawan" value="{{ $item->id_karyawan }}">
                   <input type="hidden" name="status" value="Approved">
                   <button type="submit" class="btn btn-primary" style="width: 100px">Approved</button> 
                 </form>
                 <form action="/cuti/update-status-cuti" class="mb-1" method="POST">
                   @csrf
                   <input type="hidden" name="id" value="{{ $item->id }}">
+                  <input type="hidden" name="id_karyawan" value="{{ $item->id_karyawan }}">
                   <input type="hidden" name="status" value="Rejected">
                   <button type="submit" class="btn btn-danger" style="width: 100px">Rejected</button>
                 </form>

@@ -6,6 +6,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SendEmailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
 use GuzzleHttp\Psr7\Uri;
@@ -64,7 +65,7 @@ route::middleware(['auth:userAuthentication'])->group(function(){
     Route::post('/cuti/save',[CutiController::class,'saveCuti']);
     Route::post('/cuti/update-status-cuti',[CutiController::class,'updateStatusCuti']);
     
-
+    Route::get('/kirim-email', [SendEmailController::class,'index']);
     
     
 });

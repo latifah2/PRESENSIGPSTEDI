@@ -35,6 +35,7 @@
         <h3 id="status" class="mt-2">Loading...</h3>
     </div>
 </div>
+
 <div class="row">
     @if (empty($checkAbsen->jam_in) || empty($checkAbsen->jam_out))
         @if (empty($checkAbsen->jam_in))
@@ -58,9 +59,12 @@
     </div>
     @endif
     
-</div>  
-@endsection
+</div> 
+<div id="map" style="width: 100%; height: 300px;"></div> 
 
+@endsection
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" ></script>
 <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
 
@@ -75,6 +79,24 @@
 
     function successCallback(position) {
         let myLocation = position.coords.latitude + "," + position.coords.longitude;
+        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        var circle = L.circle([-7.2574719, 112.7520883], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 15
+        }).addTo(map);
+        var polygon = L.polygon([
+            [-7.256929, 112.751423],
+            [-7.256918, 112.752990],
+            [-7.258004, 112.752968],
+            [-7.2577223058324885, 112.75110697453472]
+        ]).addTo(map);
         $('#lokasi').val(myLocation);
     }
 
@@ -177,7 +199,7 @@
         })
 
     });
-
+    
     // face detection area
     let smileCheck = 0;
     setTimeout(() => {
