@@ -117,14 +117,11 @@
 
     // untuk prosess checkin absen -> insert data ke table presensi -> jam_in
     $("#takeabsen").click(function(e) {
-        // untuk foto waktu dia klik absen in
         Webcam.snap(function(uri) {
             image = uri;
         });
 
         var lokasi = $("#lokasi").val();
-        // ajax berfungsi untuk mengirimkan data ke controller ygnantinya data akan di simpan di db presensi
-        // sama kaya form
         $.ajax({
             type : 'POST',
             url : '/presensi/store',

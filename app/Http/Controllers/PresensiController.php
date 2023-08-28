@@ -30,11 +30,6 @@ class PresensiController extends Controller
     {
         $hariini = date("Y-m-d");
         $nim = Auth::guard('userAuthentication')->user()->nim;
-        /**
-         * untuk menampilkan data tabel presensi berdasarkan tanggal presensi dan nim
-         * data checkAbsen untuk melakukan pengecekan kapan presensi masuk dan pulang
-         * 
-         */
         $data['checkAbsen'] = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nim', $nim)->first();
         return view('presensi.create', $data);
     }

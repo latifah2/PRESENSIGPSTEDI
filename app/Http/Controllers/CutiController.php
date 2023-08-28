@@ -95,7 +95,7 @@ class CutiController extends Controller
                         <br><br> Untuk melihat detail pengajuan cuti melalui link berikut 
                         <br><a href="tifanias.cloud">tifanias.cloud</a>'
         ];
-        
+
         Mail::to($emailKaryawanTujuan)->send(new SendEmail($details));
 
         if ($update) {

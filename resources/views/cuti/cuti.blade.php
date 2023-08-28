@@ -55,7 +55,7 @@
     <div class="col-12" style="padding-bottom: 100px">
       <div class="table-responsive">
         <table class="table table-bordered">
-          <thead class="bg-ugm" >
+          <thead class="bg-ugm" >     
             <tr>
               <th class="text-white">No</th>
               @if (Auth::guard('userAuthentication')->user()->user_status === 'Admin')
