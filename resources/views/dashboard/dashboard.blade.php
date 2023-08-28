@@ -24,7 +24,11 @@
             <h4 class="mb-0"> {{ $userInfo->nama_lengkap }} </h4>
     </div>
     <div class="col-6 text-right">
+      @if (!empty($userInfo->image_profile))
         <img src="{{ asset('public/upload/imageprofile/'.$userInfo->image_profile) }}" class="mt-3" style="border-radius:50%;object-fit: cover;width: 100px;height: 100px;" alt="image">
+      @else
+        <i class="fa fa-user mt-3" style="font-size: 57px;color:#083d62"></i>
+      @endif
     </div>
   </div>
   @if (Auth::guard('userAuthentication')->user()->user_status == 'Guest')
