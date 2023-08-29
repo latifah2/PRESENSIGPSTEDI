@@ -54,7 +54,7 @@ route::middleware(['auth:userAuthentication'])->group(function(){
     //profile
     Route::get('/profile',[ProfileController::class,'profile']);
     Route::get('/profile/edit',[ProfileController::class,'editprofile']);
-    Route::post('/{nim}/updateprofile',[ProfileController::class,'updateprofile']);
+    Route::post('/updateprofile',[ProfileController::class,'updateprofile']);
 
     //user setting
     Route::get('/user-setting',[UserSettingController::class,'index']);
