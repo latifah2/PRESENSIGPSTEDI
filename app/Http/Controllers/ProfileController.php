@@ -29,6 +29,8 @@ class ProfileController extends Controller
     public function updateprofile(Request $request)
     {
         $nim = Auth::guard('userAuthentication')->user()->nim;
+        $idKaryawan = Auth::guard('userAuthentication')->user()->id;
+
         $nama_lengkap = $request->nama_lengkap;
         $no_hp = $request->no_hp;
         $jabatan = $request->jabatan;
@@ -55,7 +57,8 @@ class ProfileController extends Controller
         $profileImage = $request->file('image_profile');
         if (!empty($profileImage)) {
             $getExtentionFile = $profileImage->extension();
-            $filename = 'image_profile_'.time().'-'.$nim.'.'.$getExtentionFile;
+            $nimFormated =  str_replace('/', '_', $nim);
+            $filename = 'image_profile_'.time().'-'.$nimFormated.'.'.$getExtentionFile;
 
             $data['image_profile'] = $filename;
             $folderPath = "public/upload/imageprofile/";
@@ -71,7 +74,7 @@ class ProfileController extends Controller
             
         }
 
-        $update = DB::table('karyawan')->where('nim', $nim)->update($data);
+        $update = DB::table('karyawan')->where('id', $idKaryawan)->update($data);
         if ($update){
             return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
         }else {

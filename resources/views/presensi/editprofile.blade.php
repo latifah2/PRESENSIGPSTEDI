@@ -28,7 +28,7 @@
      @endif
 
 </div>
-<form action="/{{$karyawan->nim}}/updateprofile" method="POST" enctype="multipart/form-data">
+<form action="/updateprofile" method="POST" enctype="multipart/form-data">
   @csrf
   <div class="col" style="margin-bottom :100px">
       <div class="form-group boxed">
