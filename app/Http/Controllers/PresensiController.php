@@ -19,8 +19,8 @@ class PresensiController extends Controller
     // $longitudekantor = 110.37391286621114;
     public function __construct()
     {
-        $this->latitude = -7.2574719;
-        $this->longitude = 112.7520883;
+        $this->latitude = -7.0051453;
+        $this->longitude = 110.4381254;
     }
     
     /**
@@ -195,6 +195,7 @@ class PresensiController extends Controller
     public function store(Request $request)
     {
         $nim = Auth::guard('userAuthentication')->user()->nim;
+        $idKaryawan = Auth::guard('userAuthentication')->user()->id;
         $tgl_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
@@ -229,7 +230,8 @@ class PresensiController extends Controller
                 'tgl_presensi' => $tgl_presensi,
                 'jam_in' => $jam,
                 'foto_in' => $fileName,
-                'location_in' => $lokasi
+                'location_in' => $lokasi,
+                'id_karyawan' => $idKaryawan
             ];
             $simpan = DB::table('presensi')->insert($data); // untuk menyimpan di db table presensi
             Storage::put($file, $image_base64); // upload file gambar presensi
@@ -243,6 +245,7 @@ class PresensiController extends Controller
     public function update(request $request)
     {
         $nim = Auth::guard('userAuthentication')->user()->nim;
+        $idKaryawan = Auth::guard('userAuthentication')->user()->id;
         $tgl_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
@@ -259,7 +262,7 @@ class PresensiController extends Controller
         $image = $request->image;
         $folderPath = "public/upload/absensi/";
 
-        $formatName = $nim."-".$tgl_presensi.date("His");;
+        $formatName = $nim."-".$tgl_presensi.date("His");
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName. ".png";
@@ -276,7 +279,7 @@ class PresensiController extends Controller
                 'foto_out' => $fileName,
                 'location_out' => $lokasi
             ];
-            $update = DB::table('presensi')->where('nim',$nim)->where('tgl_presensi', $tgl_presensi)->update($data);
+            $update = DB::table('presensi')->where('id_karyawan', $idKaryawan)->where('tgl_presensi', $tgl_presensi)->update($data);
             Storage::put($file, $image_base64);
             echo json_encode([
                 'status' => 'true',

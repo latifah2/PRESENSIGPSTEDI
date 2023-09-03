@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mb-2">
     @if (empty($checkAbsen->jam_in) || empty($checkAbsen->jam_out))
         @if (empty($checkAbsen->jam_in))
             <div class="col">
@@ -53,7 +53,7 @@
         @endif
     @else
     <div class="col">
-        <div class="card-body br-27 pt-1">
+        <div class="card-body br-27 pt-1 text-center">
             Anda Sudah Absen Pulang
         </div>
     </div>
@@ -98,6 +98,7 @@
             [-7.2577223058324885, 112.75110697453472]
         ]).addTo(map);
         $('#lokasi').val(myLocation);
+        console.log(myLocation);
     }
 
     function errorCallback() {

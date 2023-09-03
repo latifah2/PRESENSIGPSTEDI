@@ -152,6 +152,6 @@
   @endif
   <br /><br /><br /><br /><br />
 </div>
-
-@push('scripts')
 @endsection
+
+@push('myscript')

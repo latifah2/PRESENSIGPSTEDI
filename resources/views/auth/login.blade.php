@@ -11,9 +11,9 @@
     <meta name="description" content="Mobilekit HTML Mobile UI Kit">
     <meta name="keywords" content="bootstrap 4, mobile template, cordova, phonegap, mobile, html" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" sizes="32x32">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset ('assets/img/icon/192x192.png')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="manifest" href="__manifest.json">
+    <link rel="manifest" href="{{asset('assets/js/web.webmanifest?v='.time()) }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/icon/tedi-icon.png')}}">
 </head>
 
 <body class="bg-white">
@@ -119,7 +119,9 @@
     <!-- jQuery Circle Progress -->
     <script src={{ ('assets/js/plugins/jquery-circle-progress/circle-progress.min.js')}}></script>
     <!-- Base Js File -->
-    <script src={{ ('assets/js/base.js')}}></script>
+    <script src="{{asset ('assets/js/base.js?v='.time())}}"></script>
+    <script> const baseUrl = "{{ url('/') }}"; </script>
+    <script src="{{asset ('assets/js/register.js?v='.time())}}"></script>
 
 
 </body>

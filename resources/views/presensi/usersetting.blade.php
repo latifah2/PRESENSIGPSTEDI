@@ -60,28 +60,30 @@
        </div>  
        <div class="col-12 mt-3">
            <h3>List User Tamu</h3>
-            <table class="table">
-                <thead class="bg-ugm">
-                   <tr>
-                       <th style="color:white">No</th>
-                       <th style="color:white">NIM</th>
-                       <th style="color:white">Nama Lengkap</th>
-                       <th style="color:white">Jabatan</th>
-                       <th style="color:white">No. HP</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   @foreach ($listUserTamu as $key => $item)
-                       <tr>
-                           <td>{{ $key+1 }}</td>
-                           <td>{{ $item->nim }}</td>
-                           <td>{{ $item->nama_lengkap }}</td>
-                           <td>{{ $item->jabatan }}</td>
-                           <td>{{ $item->no_hp }}</td>
-                       </tr>
-                   @endforeach
-               </tbody>
-           </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="bg-ugm">
+                        <tr>
+                            <th style="color:white">No</th>
+                            <th style="color:white">NIM</th>
+                            <th style="color:white">Nama Lengkap</th>
+                            <th style="color:white">Jabatan</th>
+                            <th style="color:white">No. HP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($listUserTamu as $key => $item)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->nim }}</td>
+                                <td>{{ $item->nama_lengkap }}</td>
+                                <td>{{ $item->jabatan }}</td>
+                                <td>{{ $item->no_hp }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+           </div>
        </div>
        <div class="col-12 mt-3">
           <a href="/logout" class="btn mt-2 w-100 bg-ugm">Logout</a>

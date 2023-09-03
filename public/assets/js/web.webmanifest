@@ -1,0 +1,16 @@
+{
+    "name": "PRESENSI TEDI UGM",
+    "short_name": "PRESENSI TEDI UGM",
+    "description": "Aplikasi Presensi Karyawan TEDI UGM",
+    "icons": [
+        {
+            "src": "/assets/img/icon/192x192.jpg",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#000",
+    "theme_color": "#536878",
+    "display": "standalone"
+}

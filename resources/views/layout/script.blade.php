@@ -16,7 +16,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOgmBMhKUtn9GKnZ6MjYad9-1VrnHjGms"></script>
     <!-- Base Js File -->
-    <script src="{{asset ('assets/js/base.js')}}"></script>
-    <script src="{{asset ('assets/js/custom.js')}}"></script>
+    <script src="{{asset ('assets/js/base.js?v='.time())}}"></script>
+    <script src="{{asset ('assets/js/custom.js?v='.time())}}"></script>
+    <script> const baseUrl = "{{ url('/') }}"; </script>
+    <script src="{{asset ('assets/js/register.js?v='.time())}}"></script>
 
 @stack('myscript')
