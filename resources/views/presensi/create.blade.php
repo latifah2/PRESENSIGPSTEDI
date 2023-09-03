@@ -85,17 +85,21 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
         var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-        var circle = L.circle([-7.2574719, 112.7520883], {
+        //var circle = L.circle([-7.775295631227814, 110.3737219724515], {
+        var rectangle = L.rectangle([
+            [-7.7753514048291175 - 0.0003, 110.37387617367335 - 0.0003],
+            [-7.7753514048291175 + 0.0003, 110.37387617367335 + 0.0003]
+            ], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
             radius: 15
         }).addTo(map);
         var polygon = L.polygon([
-            [-7.256929, 112.751423],
-            [-7.256918, 112.752990],
-            [-7.258004, 112.752968],
-            [-7.2577223058324885, 112.75110697453472]
+            [-7.774817272052524, 110.37340413069931],
+            [-7.775217233513341, 110.37437777252539],
+            [-7.775711537516158, 110.37414039704429],
+            [-7.775303603878854, 110.37316943743558]
         ]).addTo(map);
         $('#lokasi').val(myLocation);
         console.log(myLocation);

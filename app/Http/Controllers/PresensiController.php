@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\Storage;
 class PresensiController extends Controller
 {
     protected $latitude, $longitude;
-
+    //-7.775295631227814, 110.3737219724515
+    //-7.7753514048291175, 110.37387617367335
     // $latitudekantor = -7.77536279241172;
     // $longitudekantor = 110.37391286621114;
     public function __construct()
     {
-        $this->latitude = -7.0051453;
-        $this->longitude = 110.4381254;
+        $this->latitude = -7.7753514048291175;
+        $this->longitude = 110.37387617367335;
     }
     
     /**
