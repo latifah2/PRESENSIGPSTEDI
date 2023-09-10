@@ -29,6 +29,14 @@ class UserSettingController extends Controller
         $jabatan = $request->jabatan;
         $password = Hash::make(123456);
 
+        /**
+         * cek apakah email sudah digunakan sebelumnya
+         */
+        $checkEmail = User::where("email", $email)->first();
+        if (!empty($checkEmail)) {
+            return Redirect::back()->with(['error' =>"Email $email telah digunakan"]);
+        }
+
         $data = [
         'nim' => $nim,
         'nama_lengkap' => $nama_lengkap,
