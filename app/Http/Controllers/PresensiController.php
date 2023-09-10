@@ -197,6 +197,7 @@ class PresensiController extends Controller
     {
         $nim = Auth::guard('userAuthentication')->user()->nim;
         $idKaryawan = Auth::guard('userAuthentication')->user()->id;
+
         $tgl_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
@@ -221,7 +222,8 @@ class PresensiController extends Controller
             $image = $request->image;
             $folderPath = "public/upload/absensi/";
     
-            $formatName = $nim."-".$tgl_presensi.date("His");
+            $nimFormated =  str_replace('/', '_', $nim);
+            $formatName = $nimFormated."-".$tgl_presensi.date("His");
             $image_parts = explode(";base64", $image);
             $image_base64 = base64_decode($image_parts[1]);
             $fileName = $formatName. ".png";
@@ -263,7 +265,8 @@ class PresensiController extends Controller
         $image = $request->image;
         $folderPath = "public/upload/absensi/";
 
-        $formatName = $nim."-".$tgl_presensi.date("His");
+        $nimFormated =  str_replace('/', '_', $nim);
+        $formatName = $nimFormated."-".$tgl_presensi.date("His");
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName. ".png";
